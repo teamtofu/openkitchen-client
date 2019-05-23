@@ -1,0 +1,20 @@
+.recipe-bg {
+    background-color: #333;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    border-radius: 0 !important;
+}
+
+a.btn-link {
+    text-decoration: none !important;
+}
+
+.instruction {
+    transition: background-color 300ms;
+
+    &:hover, &.step-highlight {
+        background-color: #f3f3f3;
+        cursor: pointer;
+    }
+}
