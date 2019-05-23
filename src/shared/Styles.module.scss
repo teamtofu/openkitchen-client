@@ -1,0 +1,17 @@
+$link-color: #5b31c6;
+$enable-rounded: true;
+$enable-shadows: false;
+/*$body-bg: #fcfcfc;*/
+$card-spacer-y: .4rem;
+$card-spacer-x: 1rem;
+$card-border-width: 2px;
+/*$theme-colors: (
+  'royal': #5b31c6
+);*/
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+@import 'bootstrap/scss/bootstrap.scss';
+
+a.btn-link {
+    text-decoration: none !important;
+}

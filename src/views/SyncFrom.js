@@ -1,6 +1,9 @@
 import React from 'react';
 import io from 'socket.io-client';
 import Store from '../shared/Store';
+import Classy from '../shared/Classy';
+
+const cx = Classy([]);
 
 const socket = io(process.env.NODE_ENV === 'development' ? process.env.REACT_APP_SOCKET_URL : undefined, {
     autoConnect: false
@@ -36,9 +39,9 @@ class SyncFrom extends React.Component {
     }
 
     render() {
-        return (<div className='container'>
-            <h1 className='pt-3 pb-2'>Syncing...</h1>
-            <div className='alert alert-info my-3'>
+        return (<div className={cx('container')}>
+            <h1 className={cx('pt-3', 'pb-2')}>Syncing...</h1>
+            <div className={cx('alert', 'alert-info', 'my-3')}>
                 Just one second...
             </div>
         </div>)

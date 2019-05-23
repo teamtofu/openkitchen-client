@@ -3,6 +3,9 @@ import Store from '../shared/Store';
 import Calendar from 'react-calendar';
 import Fuse from 'fuse.js';
 import ImportIng from '../shared/ImportIng';
+import Classy from '../shared/Classy';
+
+const cx = Classy([]);
 
 class MealPlan extends React.Component {
     constructor(props) {
@@ -143,39 +146,39 @@ class MealPlan extends React.Component {
             };
         });
 
-        return (<div className='container'>
-            <h1 className='pt-3 pb-2'>My Meal Plan</h1>
-            <div className='row'>
-                <div className='col-12 col-lg-5'>
-                    <div className='d-block'>
-                        <Calendar className='mx-auto' onChange={(date) => this.setState({date})} value={date} calendarType='US' minDetail='month' minDate={new Date()}/>
+        return (<div className={cx('container')}>
+            <h1 className={cx('pt-3', 'pb-2')}>My Meal Plan</h1>
+            <div className={cx('row')}>
+                <div className={cx('col-12', 'col-lg-5')}>
+                    <div className={cx('d-block')}>
+                        <Calendar className={cx('mx-auto')} onChange={(date) => this.setState({date})} value={date} calendarType='US' minDetail='month' minDate={new Date()}/>
                     </div>
                 </div>
-                <div className='col-12 col-lg-7'>
-                    <div className='my-3 mt-lg-0'>
+                <div className={cx('col-12', 'col-lg-7')}>
+                    <div className={cx('my-3', 'mt-lg-0')}>
                         <h3>Week {days[0].two}-{days[6].two}</h3>
                         <hr />
-                        <div className='pb-4'>
+                        <div className={cx('pb-4')}>
                             <label htmlFor='select-recipe'>Select a Recipe</label>
-                            <select id='select-recipe' className='form-control mb-3' value={recipe} onChange={(ev) => this.setRecipe(ev.target.value)}>
+                            <select id='select-recipe' className={cx('form-control', 'mb-3')} value={recipe} onChange={(ev) => this.setRecipe(ev.target.value)}>
                                 <option>Select a Recipe</option>
                                 {Object.values(recipes).map((recipe, key) => (<option key={key} value={recipe.id}>{recipe.name}</option>))}
                             </select>
 
                             <label htmlFor='search-recipe'>Search Recipes</label>
-                            <input id='search-recipe' type='text' className='form-control mb-3' value={search} onChange={(ev) => this.setState({search: ev.target.value})} placeholder='Search Recipes'/>
+                            <input id='search-recipe' type='text' className={cx('form-control', 'mb-3')} value={search} onChange={(ev) => this.setState({search: ev.target.value})} placeholder='Search Recipes'/>
 
-                            {searchResults[0] && (<ul className='list-group my-3'>
-                                {searchResults.slice(0, 3).map((recipe, key) => (<li key={key} className='list-group-item' onClick={() => this.setRecipe(recipe.id)}>
+                            {searchResults[0] && (<ul className={cx('list-group', 'my-3')}>
+                                {searchResults.slice(0, 3).map((recipe, key) => (<li key={key} className={cx('list-group-item')} onClick={() => this.setRecipe(recipe.id)}>
                                     {recipe.name}
                                 </li>))}
                             </ul>)}
 
                             <label htmlFor='day-list'>Days to Add</label>
-                            <div className='btn-group btn-block' id='day-list'>
-                                {days.map(({abbr, dayId, rel}, key) => (<div className={'btn px-1' + (rel === -1 ? ' btn-secondary' : this.state[dayId] ? ' btn-success' : ' btn-danger')} key={key} onClick={() => this.setState({[dayId]: !this.state[dayId]})}>{abbr}</div>))}
+                            <div className={cx('btn-group', 'btn-block')} id='day-list'>
+                                {days.map(({abbr, dayId, rel}, key) => (<div className={cx('btn', 'px-1', {'btn-secondary': rel === -1, 'btn-success': this.state[dayId] && rel !== -1, 'btn-danger': !this.state[dayId] && rel !== -1})} key={key} onClick={() => this.setState({[dayId]: !this.state[dayId]})}>{abbr}</div>))}
                             </div>
-                            <div className='btn btn-dark btn-block my-2' onClick={() => this.setState({
+                            <div className={cx('btn', 'btn-dark', 'btn-block', 'my-2')} onClick={() => this.setState({
                                 su: false,
                                 mo: true,
                                 tu: true,
@@ -185,24 +188,24 @@ class MealPlan extends React.Component {
                                 sa: false
                             })}>Select All Weekdays</div>
 
-                            <div className='btn btn-info btn-block my-3' onClick={() => this.addRecipe(days)}>Add Recipe</div>
+                            <div className={cx('btn', 'btn-info', 'btn-block', 'my-3')} onClick={() => this.addRecipe(days)}>Add Recipe</div>
                         </div>
                         <div>
                             {days.map(({name, two, pkey, rel}, key) => {
                                 let dayPlan = plan[pkey] || {};
-                                return <div key={key} className='my-2'>
+                                return <div key={key} className={cx('my-2')}>
                                     <h4 className={rel === 0 ? 'font-weight-bold' : rel === -1 ? 'text-muted' : ''}>
                                         {name} ({two})
                                     </h4>
                                     {rel !== -1
-                                        ? (<div className=''>
-                                            {!(dayPlan.recipes || [])[0] && (<div className='alert alert-light border-secondary'><b>No recipes yet!</b> Add them above.</div>)}
+                                        ? (<div>
+                                            {!(dayPlan.recipes || [])[0] && (<div className={cx('alert', 'alert-light', 'border-secondary')}><b>No recipes yet!</b> Add them above.</div>)}
                                             {(dayPlan.recipes || []).map((id, key) => {
                                                 let recipe = recipes[id];
-                                                return (<div key={key} className='input-group rounded-0'>
-                                                    <div className='form-control h-auto rounded-0'>{recipe.name}</div>
-                                                    <div className='input-group-append'>
-                                                        <div className='btn btn-danger rounded-0' onClick={() => this.removeRecipe(pkey, id)}>Remove</div>
+                                                return (<div key={key} className={cx('input-group', 'rounded-0')}>
+                                                    <div className={cx('form-control', 'h-auto', 'rounded-0')}>{recipe.name}</div>
+                                                    <div className={cx('input-group-append')}>
+                                                        <div className={cx('btn', 'btn-danger', 'rounded-0')} onClick={() => this.removeRecipe(pkey, id)}>Remove</div>
                                                     </div>
                                                 </div>);
                                             })}
@@ -210,9 +213,9 @@ class MealPlan extends React.Component {
                                         : null}
                                 </div>
                             })}
-                            <div className='btn-group btn-block my-3'>
-                                <div className='btn btn-light' onClick={() => this.mergeRecipeIng(days)}>Merge To Groceries</div>
-                                <div className='btn btn-dark' onClick={() => this.replaceRecipeIng(days)}>Replace Groceries</div>
+                            <div className={cx('btn-group', 'btn-block', 'my-3')}>
+                                <div className={cx('btn', 'btn-light')} onClick={() => this.mergeRecipeIng(days)}>Merge To Groceries</div>
+                                <div className={cx('btn', 'btn-dark')} onClick={() => this.replaceRecipeIng(days)}>Replace Groceries</div>
                             </div>
                         </div>
                     </div>

@@ -18,13 +18,13 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const paths = require('./paths');
 const modules = require('./modules');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const purgecss = require('@fullhuman/postcss-purgecss');
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -89,19 +89,28 @@ module.exports = function(webpackEnv) {
           // Necessary for external CSS imports to work
           // https://github.com/facebook/create-react-app/issues/2677
           ident: 'postcss',
-          plugins: () => [
-            require('postcss-flexbugs-fixes'),
-            require('postcss-preset-env')({
-              autoprefixer: {
-                flexbox: 'no-2009',
-              },
-              stage: 3,
-            }),
-            // Adds PostCSS Normalize as the reset css with default options,
-            // so that it honors browserslist config in package.json
-            // which in turn let's users customize the target behavior as per their needs.
-            postcssNormalize(),
-          ],
+          plugins: () => {
+            let plugins = [
+              require('postcss-flexbugs-fixes'),
+              require('postcss-preset-env')({
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                },
+                stage: 3,
+              }),
+              postcssNormalize(),
+            ];
+            if (isEnvProduction) plugins.push(purgecss({
+              content: [
+                  path.join(paths.appPublic, './*.html'),
+                  path.join(paths.appSrc, './*.js'),
+                  path.join(paths.appSrc, './**/*.js'),
+                  path.join(paths.appSrc, './**/**/*.js'),
+                  path.join(paths.appSrc, './**/**/**/*.js')
+              ]
+            }));
+            return plugins;
+          },
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },
       },
@@ -416,7 +425,7 @@ module.exports = function(webpackEnv) {
                 importLoaders: 1,
                 sourceMap: isEnvProduction && shouldUseSourceMap,
                 modules: true,
-                getLocalIdent: getCSSModuleLocalIdent,
+                localIdentName: isEnvProduction ? '[hash:5]' : '[local]-[hash:4]',
               }),
             },
             // Opt-in support for SASS (using .scss or .sass extensions).
@@ -447,7 +456,7 @@ module.exports = function(webpackEnv) {
                   importLoaders: 2,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                   modules: true,
-                  getLocalIdent: getCSSModuleLocalIdent,
+                  localIdentName: isEnvProduction ? '[hash:5]' : '[local]-[hash:4]',
                 },
                 'sass-loader'
               ),

@@ -2,6 +2,9 @@ import React from 'react';
 import io from 'socket.io-client';
 import Store from '../shared/Store';
 import QRCode from 'qrious';
+import Classy from '../shared/Classy';
+
+const cx = Classy([]);
 
 const socket = io(process.env.NODE_ENV === 'development' ? process.env.REACT_APP_SOCKET_URL : undefined, {
     autoConnect: false
@@ -60,13 +63,13 @@ class Sync extends React.Component {
     render() {
         let { code, id } = this.state;
 
-        return (<div className='container'>
-            <h1 className='pt-3 pb-2'>Sync</h1>
-            <img src={code} alt='QR Code' height={192} width={192} style={{color: 'transparent', width: '192px', height: '192px'}} className='mx-auto text-center d-block'/>
-            <div className='form-control my-2'>
+        return (<div className={cx('container')}>
+            <h1 className={cx('pt-3', 'pb-2')}>Sync</h1>
+            <img src={code} alt='QR Code' height={192} width={192} style={{color: 'transparent', width: '192px', height: '192px'}} className={cx('mx-auto', 'text-center', 'd-block')}/>
+            <div className={cx('form-control', 'my-2')}>
                 {window.location.origin}/sync/{id}
             </div>
-            <div className='alert alert-info my-3'>
+            <div className={cx('alert', 'alert-info', 'my-3')}>
                 Open the link or scan the QR Code on the other device to sync data from this device.
             </div>
         </div>)

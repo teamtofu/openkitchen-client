@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './GroceryList.scss';
-import Store from './../shared/Store';
-import Portal from './../shared/Portal';
+import Store from '../shared/Store';
+import Portal from '../shared/Portal';
+import Classy from '../shared/Classy';
+
+const cx = Classy([]);
 
 class GroceryList extends React.Component {
     constructor(props) {
@@ -74,19 +77,19 @@ class GroceryList extends React.Component {
     render() {
         let { list, itemText, printing } = this.state;
 
-        return (<div className='container'>
-            <h1 className='my-3'>Grocery List</h1>
+        return (<div className={cx('container')}>
+            <h1 className={cx('my-3')}>Grocery List</h1>
 
-            <Link to='/recipes' className='btn-link'>
-                <div className='btn btn-outline-dark btn-block my-3'>Add Recipe Ingredients</div>
+            <Link to='/recipes' className={cx('btn-link')}>
+                <div className={cx('btn', 'btn-outline-dark', 'btn-block', 'my-3')}>Add Recipe Ingredients</div>
             </Link>
 
-            <ul className='list-group my-3 rounded-0'>
-                {Object.values(list).map(({name, id, checked}, key) => (<li key={key} className='list-group-item p-0 rounded-0'>
-                    <div className='input-group'>
-                        <div className={'form-control h-auto border-0 rounded-0 list-text' + (checked ? ' text-strike bg-light' : '')} onClick={() => this.check(id)}>{name}</div>
-                        <div className='input-group-append'>
-                            <div className='btn btn-light rounded-0' onClick={() => this.removeItem(id)}>
+            <ul className={cx('list-group', 'my-3', 'rounded-0')}>
+                {Object.values(list).map(({name, id, checked}, key) => (<li key={key} className={cx('list-group-item', 'p-0', 'rounded-0')}>
+                    <div className={cx('input-group')}>
+                        <div className={cx('form-control', 'h-auto', 'border-0', 'rounded-0', 'list-text', {'text-strike': checked, 'bg-light': checked})} onClick={() => this.check(id)}>{name}</div>
+                        <div className={cx('input-group-append')}>
+                            <div className={cx('btn', 'btn-light', 'rounded-0')} onClick={() => this.removeItem(id)}>
                                 <div>Remove</div>
                             </div>
                         </div>
@@ -94,45 +97,45 @@ class GroceryList extends React.Component {
                 </li>))}
             </ul>
 
-            <div className='input-group'>
-                <input type='text' className='form-control' value={itemText} onChange={(ev) => {
+            <div className={cx('input-group')}>
+                <input type='text' className={cx('form-control')} value={itemText} onChange={(ev) => {
                     this.setState({
                         itemText: ev.target.value
                     });
                 }}/>
-                <div className='input-group-append'>
-                    <div className='btn btn-dark' onClick={() => this.addItem(itemText)}>Add Item</div>
+                <div className={cx('input-group-append')}>
+                    <div className={cx('btn', 'btn-dark')} onClick={() => this.addItem(itemText)}>Add Item</div>
                 </div>
             </div>
 
-            <div className='btn btn-outline-primary btn-block my-2' onClick={this.print}>Print</div>
+            <div className={cx('btn', 'btn-outline-primary', 'btn-block', 'my-2')} onClick={this.print}>Print</div>
 
-            <div className='btn btn-outline-danger btn-block my-2' onClick={this.flushList}>Clear List</div>
+            <div className={cx('btn', 'btn-outline-danger', 'btn-block', 'my-2')} onClick={this.flushList}>Clear List</div>
 
             {printing && (<Portal root='print-root'>
                 <h1>Grocery List</h1>
-                <div className='row my-2' style={{fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Symbol", "Noto Color Emoji"'}}>
-                    {Object.values(list).map(({name, id, checked}, key) => (<div key={key} className='col-6'>
-                        <div className='my-2'>
+                <div className={cx('row', 'my-2')} style={{fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Symbol", "Noto Color Emoji"'}}>
+                    {Object.values(list).map(({name, id, checked}, key) => (<div key={key} className={cx('col-6')}>
+                        <div className={cx('my-2')}>
                             {checked ? <strike>&#x2611; {name}</strike> : <span>&#x2610; {name}</span>}
                         </div>
                     </div>))}
                 </div>
 
                 <hr />
-                <h3 className='my-2'>Menu Elements</h3>
-                <ul className='my-2'>
+                <h3 className={cx('my-2')}>Menu Elements</h3>
+                <ul className={cx('my-2')}>
                     {Object.values(list).reduce((a, b) => {
                         console.log(b.recipe, a);
                         if (b.recipe && a.indexOf(b.recipe) === -1) a.push(b.recipe);
                         return a;
-                    }, []).map((id, key) => (<li key={key} className='col-6'>
+                    }, []).map((id, key) => (<li key={key} className={cx('col-6')}>
                         {Store.get('recipes')[id].name}
                     </li>))}
                 </ul>
-                <div className='d-block'>
+                <div className={cx('d-block')}>
                     <hr/>
-                    <small className='text-center text-muted pt-3'>Made by Open Kitchen. MIT &copy; 2019 Russell Steadman. Generated on {new Date().getMonth() + 1}/{new Date().getDate()}.</small>
+                    <small className={cx('text-center', 'text-muted', 'pt-3')}>Made by Open Kitchen. MIT &copy; 2019 Russell Steadman. Generated on {new Date().getMonth() + 1}/{new Date().getDate()}.</small>
                 </div>
             </Portal>)}
         </div>)
