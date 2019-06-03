@@ -10,6 +10,7 @@ import GroceryList from './views/GroceryList';
 import Sync from './views/Sync';
 import SyncFrom from './views/SyncFrom';
 import MealPlan from './views/MealPlan';
+//import HealthTracker from './views/HealthTracker';
 
 const cx = Classy([]);
 
@@ -73,7 +74,6 @@ class App extends React.Component {
 
     return (<div className={cx('app')}>
       <header>
-
         <nav className={cx('navbar', 'navbar-expand-md', 'navbar-light', 'bg-light')}>
           <button className={cx('navbar-toggler')} type='button' aria-label='Toggle navigation' onClick={() => this.setState({collapsed: !collapsed})}>
             <span className={cx('navbar-toggler-icon')}></span>
@@ -81,28 +81,29 @@ class App extends React.Component {
 
           <Link className={cx('navbar-brand')} to='/'>Open Kitchen</Link>
 
-          <div className={cx('collapse', 'navbar-collapse', {show: collapsed})}>
+          <div className={cx('collapse', 'navbar-collapse', {show: !collapsed})}>
             <ul className={cx('navbar-nav', 'mr-auto', 'mt-2', 'mt-md-0')}>
               <li className={cx('nav-item')}>
                 <Link className={cx('nav-link')} to='/recipes'>Recipes</Link>
               </li>
               <li className={cx('nav-item')}>
-                <Link className={cx('nav-link')} to='/groceryList'>Grocery List</Link>
+                <Link className={cx('nav-link')} to='/grocery-list'>Grocery List</Link>
               </li>
               <li className={cx('nav-item')}>
-                <Link className={cx('nav-link')} to='/mealPlan'>Meal Plan</Link>
+                <Link className={cx('nav-link')} to='/meal-plan'>Meal Plan</Link>
               </li>
             </ul>
           </div>
         </nav>
       </header>
       <Switch>
-        <Route path='/groceryList' component={GroceryList} />
+        <Route path='/grocery-list' component={GroceryList} />
         <Route path='/recipe/:id' component={Recipe} />
         <Route exact path='/recipes' component={Recipes} />
         <Route exact path='/sync' component={Sync} />
         <Route path='/sync/:id' component={SyncFrom} />
-        <Route path='/mealPlan' component={MealPlan} />
+        <Route path='/meal-plan' component={MealPlan} />
+        {/*<Route path='/health-tracker' component={HealthTracker} />*/}
         <Route component={Home} />
       </Switch>
       <footer className={cx('container', 'text-center', 'py-3')}>

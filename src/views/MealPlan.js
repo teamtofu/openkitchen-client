@@ -106,7 +106,7 @@ class MealPlan extends React.Component {
         for (let i in allRecipes) {
             ImportIng(allRecipes[i]);
         }
-        this.props.history.push('/groceryList');
+        this.props.history.push('/grocery-list');
     };
 
     replaceRecipeIng = (days) => {
@@ -194,7 +194,7 @@ class MealPlan extends React.Component {
                             {days.map(({name, two, pkey, rel}, key) => {
                                 let dayPlan = plan[pkey] || {};
                                 return <div key={key} className={cx('my-2')}>
-                                    <h4 className={rel === 0 ? 'font-weight-bold' : rel === -1 ? 'text-muted' : ''}>
+                                    <h4 className={cx({'font-weight-bold': rel === 0, 'text-muted': rel === -1})}>
                                         {name} ({two})
                                     </h4>
                                     {rel !== -1

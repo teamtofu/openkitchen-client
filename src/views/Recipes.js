@@ -145,7 +145,7 @@ class Recipes extends React.Component {
                             <li className={cx('list-group-item')}>
                                 <div className={cx('btn', 'btn-info', 'btn-block')} onClick={() => {
                                     ImportIng(r.id);
-                                    this.props.history.push('/groceryList');
+                                    this.props.history.push('/grocery-list');
                                 }}>
                                     Add To Groceries
                                 </div>    

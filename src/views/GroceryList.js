@@ -7,6 +7,8 @@ import Classy from '../shared/Classy';
 
 const cx = Classy([]);
 
+let Quagga = null;
+
 class GroceryList extends React.Component {
     constructor(props) {
         super(props);
@@ -14,11 +16,66 @@ class GroceryList extends React.Component {
         this.state = {
             list: Store.get('list') || {},
             itemText: '',
-            printing: false
+            printing: false,
+            scan: false
         };
 
         window.scrollTo(0, 0);
+
+        if (/(android|iphone|ipod|ipad)/i.test(navigator.userAgent) && navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+            this.importBarcode();
+        }
     }
+
+    importBarcode = async () => {
+        await import('webrtc-adapter');
+
+        Quagga = await import('quagga');
+        Quagga = Quagga.default || Quagga;
+
+        console.log(Quagga);
+
+        alert('scan import');
+
+        Quagga.onDetected((result) => {
+            const code = result.codeResult.code;
+    
+            alert(code);
+
+            Quagga.stop();
+        });
+
+        this.setState({scan: true});
+    };
+
+    scanBarcode = async () => {
+
+        Quagga.init({
+            inputStream : {
+                type : 'LiveStream',
+                constraints: {
+                    width: {min: 640},
+                    height: {min: 480},
+                    facingMode: 'environment',
+                    aspectRatio: {min: 1, max: 2}
+                },
+                singleChannel: true
+            },
+            locator: {
+                patchSize: 'medium',
+                halfSample: true
+            },
+            numOfWorkers: 2,
+            decoder : {
+              readers : ['upc_reader']
+            }
+        }, (err) => {
+            alert(err.message);
+            if (err) return console.error(err);
+            console.log("Starting");
+            Quagga.start();
+        });
+    };
 
     addItem = (name) => {
         let list = Store.get('list') || {};
@@ -75,7 +132,7 @@ class GroceryList extends React.Component {
     }
 
     render() {
-        let { list, itemText, printing } = this.state;
+        let { list, itemText, printing, scan } = this.state;
 
         return (<div className={cx('container')}>
             <h1 className={cx('my-3')}>Grocery List</h1>
@@ -108,6 +165,8 @@ class GroceryList extends React.Component {
                 </div>
             </div>
 
+            {scan && (<div className={cx('btn', 'btn-dark', 'btn-block', 'my-2')} onClick={this.scanBarcode}>Scan Barcode</div>)}
+
             <div className={cx('btn', 'btn-outline-primary', 'btn-block', 'my-2')} onClick={this.print}>Print</div>
 
             <div className={cx('btn', 'btn-outline-danger', 'btn-block', 'my-2')} onClick={this.flushList}>Clear List</div>
@@ -138,6 +197,8 @@ class GroceryList extends React.Component {
                     <small className={cx('text-center', 'text-muted', 'pt-3')}>Made by Open Kitchen. MIT &copy; 2019 Russell Steadman. Generated on {new Date().getMonth() + 1}/{new Date().getDate()}.</small>
                 </div>
             </Portal>)}
+
+            <div id='interactive' className='viewport'></div>
         </div>)
     };
 }

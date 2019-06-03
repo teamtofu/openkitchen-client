@@ -29,7 +29,7 @@ class Recipe extends React.Component {
 
     importIng = () => {
         ImportIng(this.state.recipe.id);
-        this.props.history.push('/groceryList');
+        this.props.history.push('/grocery-list');
     };
 
     render() {
@@ -62,7 +62,7 @@ class Recipe extends React.Component {
                     <h3>Instructions</h3>
                     {[...(recipe.recipeInstructions[0]['@type'] === 'HowToSection' ? recipe.recipeInstructions : [recipe.recipeInstructions])].map((instSet, key) => (<ul className={cx('list-group', 'my-2')} key={key}>
                         {instSet.name && <li className={cx('list-group-item', 'list-group-item-secondary')}>{instSet.name}</li>}
-                        {(instSet.itemListElement || instSet).map((step, key) => (<li key={key} className={'list-group-item instruction py-2' + (this.state.highlight === key ? ' step-highlight' : '')} onClick={() => this.setState({highlight: key})}>{typeof step === 'object' ? step.text : step}</li>))}
+                        {(instSet.itemListElement || instSet).map((step, key) => (<li key={key} className={cx('list-group-item', 'instruction', 'py-2', {'step-highlight': this.state.highlight === key})} onClick={() => this.setState({highlight: key})}>{typeof step === 'object' ? step.text : step}</li>))}
                     </ul>))}
                 </div>)}
                 <a href={recipe.url || recipe.mainEntityOfPage || '#link-missing'} target='_blank' rel='noopener noreferrer' className={cx('btn-link')}>

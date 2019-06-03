@@ -41,7 +41,7 @@ class Home extends React.Component {
                         <div className={cx('card-body')}>
                             <h5 className={cx('card-title')}>Make a Grocery List</h5>
                             <p className={cx('card-text')}>Add items individually or import all of the ingredients from your favorite recipes.</p>
-                            <Link to='/groceryList'>Add an ingredient</Link>
+                            <Link to='/grocery-list'>Add an ingredient</Link>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ class Home extends React.Component {
                         <div className={cx('card-body')}>
                             <h5 className={cx('card-title')}>Plan Your Meals</h5>
                             <p className={cx('card-text')}>Know what to buy and make ahead of time with this simple meal planner.</p>
-                            <Link to='/mealPlan'>Make your schedule</Link>
+                            <Link to='/meal-plan'>Make your schedule</Link>
                         </div>
                     </div>
                 </div>
